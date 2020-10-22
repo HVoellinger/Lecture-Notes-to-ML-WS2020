@@ -23,7 +23,7 @@
 #     9. Calculate probability of the new sentence for each class
 #     10. Output whats more likely
 
-# In[1]:
+# In[18]:
 
 
 # This notebook was created by Alireza Gholami and Jannik Schwarz
@@ -34,11 +34,17 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize import word_tokenize
 
-# to check the time of execution, import function time  
+# Import libary time to check execution date+time
 import time
 
+#check versions of libaries
+print('pandas version is: {}'.format(pd.__version__))    
 
-# In[2]:
+import sklearn    
+print('sklearn version is: {}'.format(sklearn.__version__)) 
+
+
+# In[19]:
 
 
 # Naming the columns
@@ -57,7 +63,7 @@ training_data = pd.DataFrame(rows, columns=columns)
 print(f'The training data:\n{training_data}\n')
 
 
-# In[3]:
+# In[20]:
 
 
 # Turns the data into vectors
@@ -77,7 +83,7 @@ def vectorisation(my_class):
     return tdm, my_vector, my_x
 
 
-# In[4]:
+# In[21]:
 
 
 # Here we are actually creating the matrix for sport and not sport sentences
@@ -91,7 +97,7 @@ print(f'Amount of not sport senteces: {len(tdm_not_sport)}')
 print(f'Total amount of sentences: {len(rows)}')
 
 
-# In[5]:
+# In[22]:
 
 
 # creates a dictionary for each class
@@ -102,7 +108,7 @@ def make_list(my_vector, my_x):
     return my_word_list, my_count_list, my_freq
 
 
-# In[6]:
+# In[23]:
 
 
 # create lists
@@ -117,7 +123,7 @@ print(f'sport dictionary: \n{freq_sport}\n')
 print(f'not sport dictionary: \n{freq_not_sport}\n')
 
 
-# In[7]:
+# In[24]:
 
 
 # calculate the probabilty of a word in a sentence of a class
@@ -129,7 +135,7 @@ def calculate_prob(my_word_list, my_count_list):
     return prob_dict
 
 
-# In[8]:
+# In[25]:
 
 
 # probabilities of the words in a class
@@ -139,7 +145,7 @@ print(f'probabilites of words in sport sentences: \n{prob_sport_dict}\n')
 print(f'probabilites of words in not sport sentences: \n{prob_not_sport_dict}')
 
 
-# In[9]:
+# In[26]:
 
 
 # all sentences again
@@ -161,7 +167,7 @@ print(f'Amount of distinct words in sport sentences: {total_counts_features_spor
 print(f'Amount of distinct words in not sport sentences: {total_counts_features_not_sport}')
 
 
-# In[10]:
+# In[27]:
 
 
 # a new sentence 
@@ -171,7 +177,7 @@ new_sentence = 'Hermann plays a TT match'
 new_word_list = word_tokenize(new_sentence)
 
 
-# In[11]:
+# In[28]:
 
 
 # We're using laplace smoothing
@@ -189,7 +195,7 @@ def laplace(freq, total_count, total_feat):
     return prob_sport_or_not
 
 
-# In[12]:
+# In[29]:
 
 
 # probability for the new words
@@ -200,7 +206,7 @@ print(f'probability that the word is in a sport sentece: {prob_new_sport}')
 print(f'probability that the word is in a not sport sentece: {prob_new_not_sport}')
 
 
-# In[13]:
+# In[30]:
 
 
 # multiplying the probabilities of each word
@@ -224,7 +230,7 @@ not_sport_multiply_result *= ( len(tdm_not_sport) / len(rows) )
     
 
 
-# In[14]:
+# In[31]:
 
 
 # comparing whats more likely 
@@ -237,10 +243,12 @@ else:
     print('Verdict: It\'s probably not a sport sentence!')
 
 
-# In[15]:
+# In[32]:
 
 
 # print current date and time
-print("date",time.strftime("%d.%m.%Y %H:%M:%S"))
-print ("*** End of Homework H3.2-Bayes Learning for Text Classification ***")
+
+print("Date & Time:",time.strftime("%d.%m.%Y %H:%M:%S"))
+# end of import test
+print ("*** End of Homework-H3.2_Bayes-Learning... ***")
 
