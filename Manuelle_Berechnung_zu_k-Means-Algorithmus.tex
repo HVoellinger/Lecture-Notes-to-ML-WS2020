@@ -2,62 +2,132 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{tikz}
 
 \begin{document}
 
-\section*{3-Means-Algorithmus}
+\title{Beispiel für den 3-Means-Algorithmus}
+\author{Dr. Hermann Völlinger}
+\date{01.09.2024}
+\maketitle 
 
-Gegeben seien die folgenden 8 Punkte in einem zweidimensionalen Raum:
-\[
-\text{Punkt A}: (1, 1), \quad \text{Punkt B}: (2, 1), \quad \text{Punkt C}: (4, 3), \quad \text{Punkt D}: (5, 4), \quad
-\]
-\[
-\text{Punkt E}: (6, 7), \quad \text{Punkt F}: (8, 8), \quad \text{Punkt G}: (3, 3), \quad \text{Punkt H}: (7, 7)
-\]
+\section*{Ausgangsdaten}
+Wir haben die folgenden acht Punkte in einem 2D-Raum:
+\begin{align*}
+\text{Punkt A:} & \quad (1, 1) \\
+\text{Punkt B:} & \quad (2, 1) \\
+\text{Punkt C:} & \quad (4, 3) \\
+\text{Punkt D:} & \quad (5, 4) \\
+\text{Punkt E:} & \quad (6, 7) \\
+\text{Punkt F:} & \quad (8, 8) \\
+\text{Punkt G:} & \quad (3, 3) \\
+\text{Punkt H:} & \quad (7, 7)
+\end{align*}
 
-\subsection*{Schritt 1: Initialisierung der Cluster-Zentren}
+Ziel ist es, diese Punkte in \textbf{drei Cluster} aufzuteilen.
 
-Wähle 3 Anfangszentren zufällig aus den Punkten:
-\[
-\text{Cluster 1 Zentrum}: (1, 1), \quad \text{Cluster 2 Zentrum}: (5, 4), \quad \text{Cluster 3 Zentrum}: (8, 8)
-\]
+\section*{Schritt 1: Initialisierung der Cluster-Zentren}
+Wir wählen drei Anfangszentren zufällig aus den Punkten:
+\begin{align*}
+\text{Cluster 1 Zentrum:} & \quad (1, 1) \quad \text{(Punkt A)} \\
+\text{Cluster 2 Zentrum:} & \quad (5, 4) \quad \text{(Punkt D)} \\
+\text{Cluster 3 Zentrum:} & \quad (8, 8) \quad \text{(Punkt F)}
+\end{align*}
 
-\subsection*{Schritt 2: Zuordnung der Punkte zu den Zentren}
+\section*{Iteration 1: Zuordnung der Punkte zu den Zentren}
+Für jeden Punkt berechnen wir die euklidische Distanz zu den drei Zentren und ordnen den Punkt dem nächstgelegenen Zentrum zu.
 
-Für jeden Punkt \( P_i \) berechne die euklidische Distanz zu jedem Zentrum \( C_j \) und ordne den Punkt dem nächstgelegenen Zentrum zu:
-\[
-d(P_i, C_j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}
-\]
-
-\subsection*{Zuordnungsergebnisse:}
+\subsection*{Berechnung der Distanzen und Zuordnung}
 
 \begin{itemize}
-    \item \textbf{Cluster 1:} Punkte A (1, 1), B (2, 1)
-    \item \textbf{Cluster 2:} Punkte C (4, 3), D (5, 4), G (3, 3)
-    \item \textbf{Cluster 3:} Punkte E (6, 7), F (8, 8), H (7, 7)
+    \item \textbf{Punkt A (1, 1):}
+    \begin{align*}
+    d(A, \text{Cluster 1}) &= \sqrt{(1-1)^2 + (1-1)^2} = 0 \\
+    d(A, \text{Cluster 2}) &= \sqrt{(1-5)^2 + (1-4)^2} = \sqrt{16 + 9} = 5 \\
+    d(A, \text{Cluster 3}) &= \sqrt{(1-8)^2 + (1-8)^2} = \sqrt{49 + 49} = 9.899 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 1}
+    \end{align*}
+    
+    \item \textbf{Punkt B (2, 1):}
+    \begin{align*}
+    d(B, \text{Cluster 1}) &= \sqrt{(2-1)^2 + (1-1)^2} = \sqrt{1} = 1 \\
+    d(B, \text{Cluster 2}) &= \sqrt{(2-5)^2 + (1-4)^2} = \sqrt{9 + 9} = 4.243 \\
+    d(B, \text{Cluster 3}) &= \sqrt{(2-8)^2 + (1-8)^2} = \sqrt{36 + 49} = 9.219 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 1}
+    \end{align*}
+    
+    \item \textbf{Punkt C (4, 3):}
+    \begin{align*}
+    d(C, \text{Cluster 1}) &= \sqrt{(4-1)^2 + (3-1)^2} = \sqrt{9 + 4} = 3.606 \\
+    d(C, \text{Cluster 2}) &= \sqrt{(4-5)^2 + (3-4)^2} = \sqrt{1 + 1} = 1.414 \\
+    d(C, \text{Cluster 3}) &= \sqrt{(4-8)^2 + (3-8)^2} = \sqrt{16 + 25} = 6.403 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 2}
+    \end{align*}
+    
+    \item \textbf{Punkt D (5, 4):}
+    \begin{align*}
+    d(D, \text{Cluster 1}) &= \sqrt{(5-1)^2 + (4-1)^2} = \sqrt{16 + 9} = 5 \\
+    d(D, \text{Cluster 2}) &= \sqrt{(5-5)^2 + (4-4)^2} = 0 \\
+    d(D, \text{Cluster 3}) &= \sqrt{(5-8)^2 + (4-8)^2} = \sqrt{9 + 16} = 5 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 2}
+    \end{align*}
+    
+    \item \textbf{Punkt E (6, 7):}
+    \begin{align*}
+    d(E, \text{Cluster 1}) &= \sqrt{(6-1)^2 + (7-1)^2} = \sqrt{25 + 36} = 7.810 \\
+    d(E, \text{Cluster 2}) &= \sqrt{(6-5)^2 + (7-4)^2} = \sqrt{1 + 9} = 3.162 \\
+    d(E, \text{Cluster 3}) &= \sqrt{(6-8)^2 + (7-8)^2} = \sqrt{4 + 1} = 2.236 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 3}
+    \end{align*}
+    
+    \item \textbf{Punkt F (8, 8):}
+    \begin{align*}
+    d(F, \text{Cluster 1}) &= \sqrt{(8-1)^2 + (8-1)^2} = \sqrt{49 + 49} = 9.899 \\
+    d(F, \text{Cluster 2}) &= \sqrt{(8-5)^2 + (8-4)^2} = \sqrt{9 + 16} = 5 \\
+    d(F, \text{Cluster 3}) &= \sqrt{(8-8)^2 + (8-8)^2} = 0 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 3}
+    \end{align*}
+    
+    \item \textbf{Punkt G (3, 3):}
+    \begin{align*}
+    d(G, \text{Cluster 1}) &= \sqrt{(3-1)^2 + (3-1)^2} = \sqrt{4 + 4} = 2.828 \\
+    d(G, \text{Cluster 2}) &= \sqrt{(3-5)^2 + (3-4)^2} = \sqrt{4 + 1} = 2.236 \\
+    d(G, \text{Cluster 3}) &= \sqrt{(3-8)^2 + (3-8)^2} = \sqrt{25 + 25} = 7.071 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 2}
+    \end{align*}
+    
+    \item \textbf{Punkt H (7, 7):}
+    \begin{align*}
+    d(H, \text{Cluster 1}) &= \sqrt{(7-1)^2 + (7-1)^2} = \sqrt{36 + 36} = 8.485 \\
+    d(H, \text{Cluster 2}) &= \sqrt{(7-5)^2 + (7-4)^2} = \sqrt{4 + 9} = 3.605 \\
+    d(H, \text{Cluster 3}) &= \sqrt{(7-8)^2 + (7-8)^2} = \sqrt{1 + 1} = 1.414 \\
+    \textbf{Zuordnung:} & \quad \text{Cluster 3}
+    \end{align*}
 \end{itemize}
 
-\subsection*{Schritt 3: Aktualisierung der Cluster-Zentren}
+\subsection*{Ergebnis der ersten Iteration}
+\begin{itemize}
+    \item \textbf{Cluster 1:} Punkte A, B
+    \item \textbf{Cluster 2:} Punkte C, D, G
+    \item \textbf{Cluster 3:} Punkte E, F, H
+\end{itemize}
 
-Berechne die neuen Cluster-Zentren als Mittelwert der Punkte in jedem Cluster:
-\[
-\text{Neues Zentrum von Cluster 1}: \left( \frac{1+2}{2}, \frac{1+1}{2} \right) = (1.5, 1)
-\]
-\[
-\text{Neues Zentrum von Cluster 2}: \left( \frac{4+5+3}{3}, \frac{3+4+3}{3} \right) = (4, 3.33)
-\]
-\[
-\text{Neues Zentrum von Cluster 3}: \left( \frac{6+8+7}{3}, \frac{7+8+7}{3} \right) = (7, 7.33)
-\]
+\section*{Schritt 3: Neuberechnung der Cluster-Zentren}
+\begin{itemize}
+    \item \textbf{Neues Zentrum für Cluster 1:} \((\frac{1+2}{2}, \frac{1+1}{2}) = (1.5, 1)\)
+    \item \textbf{Neues Zentrum für Cluster 2:} \((\frac{4+5+3}{3}, \frac{3+4+3}{3}) = (4, 3.33)\)
+    \item \textbf{Neues Zentrum für Cluster 3:} \((\frac{6+8+7}{3}, \frac{7+8+7}{3}) = (7, 7.33)\)
+\end{itemize}
 
-\subsection*{Schritt 4: Wiederholung der Schritte 2 und 3}
+\section*{Iteration 2: Neue Zuordnung der Punkte}
+Nach der Neuberechnung der Cluster-Zentren bleiben die Punkte den gleichen Clustern zugeordnet. Daher ist der Algorithmus nach zwei Iterationen konvergiert.
 
-Wiederhole die Schritte 2 und 3, bis sich die Cluster-Zentren nicht mehr signifikant ändern. In diesem Beispiel konvergiert der Algorithmus nach 2 Iterationen.
+\subsection*{Endergebnis}
+Die finalen Cluster sind:
+\begin{itemize}
+    \item \textbf{Cluster 1 (Zentrum: (1.5, 1)):} Punkte A, B
+    \item \textbf{Cluster 2 (Zentrum: (4, 3.33)):} Punkte C, D, G
+    \item \textbf{Cluster 3 (Zentrum: (7, 7.33)):} Punkte E, F, H
+\end{itemize}
 
-\subsection*{Endergebnis:}
-Die endgültigen Cluster-Zentren sind:
-\[
-\text{Cluster 1 Zentrum}: (1.5, 1), \quad \text{Cluster 2 Zentrum}: (4, 3.33), \quad \text{Cluster 3 Zentrum}: (7, 7.33)
-\]
-Die 8 Punkte sind in 3 Gruppen aufgeteilt. Es waren 2 Iterationen des Algorithmus notwendig.
 \end{document}
