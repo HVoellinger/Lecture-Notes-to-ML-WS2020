@@ -1,101 +1,63 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
 
 \begin{document}
 
-\section*{K-means Beispiel mit \( k = 3 \)}
+\section*{3-Means-Algorithmus}
 
-Angenommen, wir haben die folgenden fünf Datenpunkte in einem zweidimensionalen Raum:
-
+Gegeben seien die folgenden 8 Punkte in einem zweidimensionalen Raum:
 \[
-\text{Punkte} = \{(2, 3), (3, 3), (6, 7), (8, 8), (10, 10)\}
+\text{Punkt A}: (1, 1), \quad \text{Punkt B}: (2, 1), \quad \text{Punkt C}: (4, 3), \quad \text{Punkt D}: (5, 4), \quad
+\]
+\[
+\text{Punkt E}: (6, 7), \quad \text{Punkt F}: (8, 8), \quad \text{Punkt G}: (3, 3), \quad \text{Punkt H}: (7, 7)
 \]
 
-Wir möchten diese Punkte in \( k = 3 \) Cluster gruppieren.
+\subsection*{Schritt 1: Initialisierung der Cluster-Zentren}
 
-\subsection*{Schritt 1: Initialisierung der Zentroiden}
-Wir wählen zunächst zufällig drei Datenpunkte als Anfangszentroiden:
-
-\begin{itemize}
-    \item Zentroid 1: \( C_1 = (2, 3) \)
-    \item Zentroid 2: \( C_2 = (6, 7) \)
-    \item Zentroid 3: \( C_3 = (8, 8) \)
-\end{itemize}
-
-\subsection*{Schritt 2: Berechnung der Zuordnung}
-Nun berechnen wir die euklidischen Distanzen jedes Datenpunkts zu den drei Zentroiden und weisen jeden Punkt dem nächstgelegenen Zentroiden zu.
-
-Die euklidische Distanz zwischen zwei Punkten \( (x_1, y_1) \) und \( (x_2, y_2) \) ist gegeben durch:
-
+Wähle 3 Anfangszentren zufällig aus den Punkten:
 \[
-\text{Distanz} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+\text{Cluster 1 Zentrum}: (1, 1), \quad \text{Cluster 2 Zentrum}: (5, 4), \quad \text{Cluster 3 Zentrum}: (8, 8)
 \]
 
-\textbf{Punkt (2, 3):}
-\begin{align*}
-\text{Distanz zu } C_1 = (2, 3): & \quad \sqrt{(2-2)^2 + (3-3)^2} = 0 \\
-\text{Distanz zu } C_2 = (6, 7): & \quad \sqrt{(6-2)^2 + (7-3)^2} = \sqrt{16 + 16} = \sqrt{32} \approx 5{,}66 \\
-\text{Distanz zu } C_3 = (8, 8): & \quad \sqrt{(8-2)^2 + (8-3)^2} = \sqrt{36 + 25} = \sqrt{61} \approx 7{,}81
-\end{align*}
+\subsection*{Schritt 2: Zuordnung der Punkte zu den Zentren}
 
-Nächstgelegener Zentroid: \( C_1 \)
+Für jeden Punkt \( P_i \) berechne die euklidische Distanz zu jedem Zentrum \( C_j \) und ordne den Punkt dem nächstgelegenen Zentrum zu:
+\[
+d(P_i, C_j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}
+\]
 
-\textbf{Punkt (3, 3):}
-\begin{align*}
-\text{Distanz zu } C_1 = (2, 3): & \quad \sqrt{(3-2)^2 + (3-3)^2} = \sqrt{1} = 1 \\
-\text{Distanz zu } C_2 = (6, 7): & \quad \sqrt{(6-3)^2 + (7-3)^2} = \sqrt{9 + 16} = \sqrt{25} = 5 \\
-\text{Distanz zu } C_3 = (8, 8): & \quad \sqrt{(8-3)^2 + (8-3)^2} = \sqrt{25 + 25} = \sqrt{50} \approx 7{,}07
-\end{align*}
-
-Nächstgelegener Zentroid: \( C_1 \)
-
-\textbf{Punkt (6, 7):}
-\begin{align*}
-\text{Distanz zu } C_1 = (2, 3): & \quad \sqrt{(6-2)^2 + (7-3)^2} = \sqrt{16 + 16} = \sqrt{32} \approx 5{,}66 \\
-\text{Distanz zu } C_2 = (6, 7): & \quad \sqrt{(6-6)^2 + (7-7)^2} = 0 \\
-\text{Distanz zu } C_3 = (8, 8): & \quad \sqrt{(8-6)^2 + (8-7)^2} = \sqrt{4 + 1} = \sqrt{5} \approx 2{,}24
-\end{align*}
-
-Nächstgelegener Zentroid: \( C_2 \)
-
-\textbf{Punkt (8, 8):}
-\begin{align*}
-\text{Distanz zu } C_1 = (2, 3): & \quad \sqrt{(8-2)^2 + (8-3)^2} = \sqrt{36 + 25} = \sqrt{61} \approx 7{,}81 \\
-\text{Distanz zu } C_2 = (6, 7): & \quad \sqrt{(8-6)^2 + (8-7)^2} = \sqrt{4 + 1} = \sqrt{5} \approx 2{,}24 \\
-\text{Distanz zu } C_3 = (8, 8): & \quad \sqrt{(8-8)^2 + (8-8)^2} = 0
-\end{align*}
-
-Nächstgelegener Zentroid: \( C_3 \)
-
-\textbf{Punkt (10, 10):}
-\begin{align*}
-\text{Distanz zu } C_1 = (2, 3): & \quad \sqrt{(10-2)^2 + (10-3)^2} = \sqrt{64 + 49} = \sqrt{113} \approx 10{,}63 \\
-\text{Distanz zu } C_2 = (6, 7): & \quad \sqrt{(10-6)^2 + (10-7)^2} = \sqrt{16 + 9} = \sqrt{25} = 5 \\
-\text{Distanz zu } C_3 = (8, 8): & \quad \sqrt{(10-8)^2 + (10-8)^2} = \sqrt{4 + 4} = \sqrt{8} \approx 2{,}83
-\end{align*}
-
-Nächstgelegener Zentroid: \( C_3 \)
-
-\subsection*{Zuordnung nach dem ersten Schritt}
-\begin{itemize}
-    \item \( C_1 \): \{(2, 3), (3, 3)\}
-    \item \( C_2 \): \{(6, 7)\}
-    \item \( C_3 \): \{(8, 8), (10, 10)\}
-\end{itemize}
-
-\subsection*{Schritt 3: Zentroiden aktualisieren}
-Wir berechnen die neuen Zentroiden, indem wir den Mittelwert der Punkte in jedem Cluster berechnen.
+\subsection*{Zuordnungsergebnisse:}
 
 \begin{itemize}
-    \item Neuer Zentroid für \( C_1 \): Mittelwert von \{(2, 3), (3, 3)\} = \(\left(\frac{2+3}{2}, \frac{3+3}{2}\right) = (2.5, 3)\)
-    \item Neuer Zentroid für \( C_2 \): Da es nur einen Punkt gibt, bleibt der Zentroid gleich \( (6, 7) \).
-    \item Neuer Zentroid für \( C_3 \): Mittelwert von \{(8, 8), (10, 10)\} = \(\left(\frac{8+10}{2}, \frac{8+10}{2}\right) = (9, 9)\)
+    \item \textbf{Cluster 1:} Punkte A (1, 1), B (2, 1)
+    \item \textbf{Cluster 2:} Punkte C (4, 3), D (5, 4), G (3, 3)
+    \item \textbf{Cluster 3:} Punkte E (6, 7), F (8, 8), H (7, 7)
 \end{itemize}
 
-\subsection*{Schritt 4: Wiederholung}
-Wir würden nun die Schritte 2 und 3 wiederholen, indem wir die Zuordnung der Punkte basierend auf den aktualisierten Zentroiden erneut berechnen und die Zentroiden so lange aktualisieren, bis sich die Zuordnungen nicht mehr ändern.
+\subsection*{Schritt 3: Aktualisierung der Cluster-Zentren}
 
-\subsection*{Endergebnis}
-Nach mehreren Iterationen (in diesem einfachen Beispiel könnten bereits 2 Iterationen ausreichen) würden wir eine stabile Zuordnung und endgültige Zentroiden haben. Das Ergebnis wären die 3 Cluster mit den zugehörigen Punkten.
+Berechne die neuen Cluster-Zentren als Mittelwert der Punkte in jedem Cluster:
+\[
+\text{Neues Zentrum von Cluster 1}: \left( \frac{1+2}{2}, \frac{1+1}{2} \right) = (1.5, 1)
+\]
+\[
+\text{Neues Zentrum von Cluster 2}: \left( \frac{4+5+3}{3}, \frac{3+4+3}{3} \right) = (4, 3.33)
+\]
+\[
+\text{Neues Zentrum von Cluster 3}: \left( \frac{6+8+7}{3}, \frac{7+8+7}{3} \right) = (7, 7.33)
+\]
 
+\subsection*{Schritt 4: Wiederholung der Schritte 2 und 3}
+
+Wiederhole die Schritte 2 und 3, bis sich die Cluster-Zentren nicht mehr signifikant ändern. In diesem Beispiel konvergiert der Algorithmus nach 2 Iterationen.
+
+\subsection*{Endergebnis:}
+Die endgültigen Cluster-Zentren sind:
+\[
+\text{Cluster 1 Zentrum}: (1.5, 1), \quad \text{Cluster 2 Zentrum}: (4, 3.33), \quad \text{Cluster 3 Zentrum}: (7, 7.33)
+\]
+Die 8 Punkte sind in 3 Gruppen aufgeteilt. Es waren 2 Iterationen des Algorithmus notwendig.
 \end{document}
